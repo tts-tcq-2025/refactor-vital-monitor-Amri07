@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "monitor.h"
+#include "./monitor.h"
 
 TEST(Monitor, TemperatureOutOfRange) {
     EXPECT_FALSE(vitalsOk(103, 80, 95));
@@ -20,4 +20,5 @@ TEST(Monitor, AllVitalsOk) {
     EXPECT_TRUE(vitalsOk(95, 60, 90));
     EXPECT_TRUE(vitalsOk(102, 100, 90));
 }
+
 
