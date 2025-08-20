@@ -1,7 +1,9 @@
-#include "./monitor.h"
+#include ".monitor.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <algorithm>
+
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
 bool isTemperatureOk(float temperature) {
@@ -32,16 +34,16 @@ struct VitalCheck {
 };
 
 bool vitalsOk(float temperature, float pulseRate, float spo2) {
-    VitalCheck checks[] = {
+    const VitalCheck checks[] = {
         {isTemperatureOk(temperature), "Temperature is critical!"},
         {isPulseRateOk(pulseRate), "Pulse Rate is out of range!"},
         {isSpo2Ok(spo2), "Oxygen Saturation out of range!"}
     };
-    for (const auto& check : checks) {
-        if (!check.ok) {
-            alert(check.message);
-            return false;
-        }
+    auto it = std::find_if(std::begin(checks), std::end(checks),
+                           [](const VitalCheck& check){ return !check.ok; });
+    if (it != std::end(checks)) {
+        alert(it->message);
+        return false;
     }
     return true;
 }
