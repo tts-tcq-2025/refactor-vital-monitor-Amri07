@@ -26,18 +26,22 @@ void alert(const char* message) {
     }
 }
 
+struct VitalCheck {
+    bool ok;
+    const char* message;
+};
+
 bool vitalsOk(float temperature, float pulseRate, float spo2) {
-    if (!isTemperatureOk(temperature)) {
-        alert("Temperature is critical!");
-        return false;
-    }
-    if (!isPulseRateOk(pulseRate)) {
-        alert("Pulse Rate is out of range!");
-        return false;
-    }
-    if (!isSpo2Ok(spo2)) {
-        alert("Oxygen Saturation out of range!");
-        return false;
+    VitalCheck checks[] = {
+        {isTemperatureOk(temperature), "Temperature is critical!"},
+        {isPulseRateOk(pulseRate), "Pulse Rate is out of range!"},
+        {isSpo2Ok(spo2), "Oxygen Saturation out of range!"}
+    };
+    for (const auto& check : checks) {
+        if (!check.ok) {
+            alert(check.message);
+            return false;
+        }
     }
     return true;
 }
