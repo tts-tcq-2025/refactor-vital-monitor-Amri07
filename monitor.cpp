@@ -33,11 +33,11 @@ struct VitalCheck {
     const char* message;
 };
 
-bool vitalsOk(float temperature, float pulseRate, float spo2) {
+bool vitalsInRange(float temperature, float pulseRate, float spo2) {
     const VitalCheck checks[] = {
-        {isTemperatureinRange(temperature), "Temperature is critical!"},
-        {isPulseRateinRange(pulseRate), "Pulse Rate is out of range!"},
-        {isSpo2inRange(spo2), "Oxygen Saturation out of range!"}
+        {isTemperatureInRange(temperature), "Temperature is critical!"},
+        {isPulseRateInRange(pulseRate), "Pulse Rate is out of range!"},
+        {isSpo2InRange(spo2), "Oxygen Saturation out of range!"}
     };
     auto it = std::find_if(std::begin(checks), std::end(checks),
                            [](const VitalCheck& check){ return !check.ok; });
